@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Buku;
 use Illuminate\Http\Request;
-
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\DataTables;
 class BukuController extends Controller
 {
     /**
@@ -12,9 +13,24 @@ class BukuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function jsonbuku()
+    {
+        $buku = Buku::all();
+        return Datatables::of($buku)
+        ->addColumn('action', function($buku){
+            return '<a href="#" class="btn btn-xs btn-primary edit" data-id="'.$buku->id.'">
+            <i class="glyphicon glyphicon-edit"></i> Edit</a>&nbsp;
+            <a href="#" class="btn btn-xs btn-danger delete" id="'.$buku->id.'">
+            <i class="glyphicon glyphicon-remove"></i> Delete</a>';
+            })
+        ->rawColumns(['action'])->make(true);
+    
+    }
+
     public function index()
     {
-        //
+        return view('Buku.index');
     }
 
     /**
@@ -35,7 +51,29 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'judul' => 'required',
+            'pengarang' => 'required',
+            'tahun_terbit' => 'required|numeric',
+            'penerbit' => 'required',
+            'tersedia' => 'required',
+            
+        ],[
+            'judul.required'=>':Attribute harus diisi',
+            'pengarang.required'=>':Attribute harus diisi',
+            'tahun_terbit.required'=>':Attribute harus diisi',
+            'tahun_terbit.numeric'=>':Attribute harus berupa angka',
+            'penerbit.required'=>':Attribute harus diisi',
+            'tersedia.required'=>':Attribute harus diisi',
+        ]);
+        $data = new Buku;
+        $data->judul = $request->judul;
+        $data->pengarang = $request->pengarang;
+        $data->tahun_terbit = $request->tahun_terbit;
+        $data->penerbit = $request->penerbit;
+        $data->tersedia = $request->tersedia;
+        $data->save();
+        return response()->json(['success'=>true]);
     }
 
     /**
@@ -44,9 +82,9 @@ class BukuController extends Controller
      * @param  \App\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function show(Buku $buku)
+    public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -55,9 +93,11 @@ class BukuController extends Controller
      * @param  \App\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function edit(Buku $buku)
+    public function edit($id)
     {
-        //
+        $buku = Buku::findOrFail($id);
+        return $buku;
+        
     }
 
     /**
@@ -67,9 +107,40 @@ class BukuController extends Controller
      * @param  \App\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request,$id)
     {
-        //
+        $this->validate($request, [
+            'judul' => 'required',
+            'pengarang' => 'required',
+            'tahun_terbit' => 'required|numeric',
+            'penerbit' => 'required',
+            'tersedia' => 'required',
+            
+        ],[
+            'judul.required'=>':Attribute harus diisi',
+            'pengarang.required'=>':Attribute harus diisi',
+            'tahun_terbit.required'=>':Attribute harus diisi',
+            'tahun_terbit.numeric'=>':Attribute harus berupa angka',
+            'penerbit.required'=>':Attribute harus diisi',
+            'tersedia.required'=>':Attribute harus diisi',
+        ]);
+        $data = Buku::findOrFail($id);
+        $data->judul = $request->judul;
+        $data->pengarang = $request->pengarang;
+        $data->tahun_terbit = $request->tahun_terbit;
+        $data->penerbit = $request->penerbit;
+        $data->tersedia = $request->tersedia;
+        $data->save();
+        return response()->json(['success'=>true]);
+    }
+
+    public function removedata(Request $request)
+    {
+        $buku = Buku::find($request->input('id'));
+        if($buku->delete())
+        {
+            echo 'Data Deleted';
+        }
     }
 
     /**

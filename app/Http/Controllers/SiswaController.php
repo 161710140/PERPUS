@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Siswa;
+use App\Kelas;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\DataTables;
@@ -19,19 +20,23 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::all();
         return Datatables::of($siswa)
+        ->addColumn('kelas', function($siswa){
+            return $siswa->kelas->kelas;
+        })
         ->addColumn('action', function($siswa){
             return '<a href="#" class="btn btn-xs btn-primary edit" data-id="'.$siswa->id.'">
             <i class="glyphicon glyphicon-edit"></i> Edit</a>&nbsp;
             <a href="#" class="btn btn-xs btn-danger delete" id="'.$siswa->id.'">
             <i class="glyphicon glyphicon-remove"></i> Delete</a>';
             })
-        ->rawColumns(['action'])->make(true);
+        ->rawColumns(['action','kelas'])->make(true);
     
     }
 
     public function index()
     {
-        return view('Siswa.index');
+        $kelas = Kelas::all();
+        return view('Siswa.index',compact('kelas'));
     }
 
     /**
@@ -54,12 +59,12 @@ class SiswaController extends Controller
         $this->validate($request, [
             'no_absen' => 'required|numeric',
             'nama' => 'required',
-            'kelas' => 'required',
+            'id_kelas' => 'required',
             'no_induk' => 'required|numeric',
         ],[
             'no_absen.required'=>':Attribute harus diisi',
             'nama.required'=>':Attribute harus diisi',
-            'kelas.required'=>':Attribute harus diisi',
+            'id_kelas.required'=>':Attribute harus diisi',
             'no_induk.required'=>':Attribute harus diisi',
             'no_induk.numeric'=>':Attribute harus dengan Angka',
             'no_absen.numeric'=>':Attribute harus diisi dengan Angka'
@@ -67,7 +72,7 @@ class SiswaController extends Controller
         $data = new Siswa;
         $data->no_absen = $request->no_absen;
         $data->nama = $request->nama;
-        $data->kelas = $request->kelas;
+        $data->id_kelas = $request->id_kelas;
         $data->no_induk = $request->no_induk;
         $data->save();
         return response()->json(['success'=>true]);
@@ -108,12 +113,12 @@ class SiswaController extends Controller
         $this->validate($request, [
             'no_absen' => 'required|numeric|unique:siswas,no_absen',
             'nama' => 'required',
-            'kelas' => 'required',
+            'id_kelas' => 'required',
             'no_induk' => 'required|numeric|unique:siswas,no_induk',
         ],[
             'no_absen.required'=>':Attribute harus diisi',
             'nama.required'=>':Attribute harus diisi',
-            'kelas.required'=>':Attribute harus diisi',
+            'id_kelas.required'=>':Attribute harus diisi',
             'no_induk.required'=>':Attribute harus diisi',
             'no_induk.numeric'=>':Attribute harus dengan Angka',
             'no_absen.numeric'=>':Attribute harus diisi dengan Angka'
@@ -121,7 +126,7 @@ class SiswaController extends Controller
         $data = Siswa::findOrFail($id);
         $data->no_absen = $request->no_absen;
         $data->nama = $request->nama;
-        $data->kelas = $request->kelas;
+        $data->id_kelas = $request->id_kelas;
         $data->no_induk = $request->no_induk;
         $data->save();
         return response()->json(['success'=>true]);

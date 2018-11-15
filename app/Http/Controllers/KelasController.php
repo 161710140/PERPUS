@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Kelas;
 use Illuminate\Http\Request;
-
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\DataTables;
 class KelasController extends Controller
 {
     /**
@@ -12,9 +13,23 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function jsonkelas()
+    {
+        $kelas = Kelas::all();
+        return Datatables::of($kelas)
+        ->addColumn('action', function($kelas){
+            return '<a href="#" class="btn btn-xs btn-primary edit" data-id="'.$kelas->id.'">
+            <i class="glyphicon glyphicon-edit"></i> Edit</a>&nbsp;
+            <a href="#" class="btn btn-xs btn-danger delete" id="'.$kelas->id.'">
+            <i class="glyphicon glyphicon-remove"></i> Delete</a>';
+            })
+        ->rawColumns(['action'])->make(true);
+    }
+
     public function index()
     {
-        //
+        return view('kelas.index');
     }
 
     /**
@@ -35,7 +50,16 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'kelas' => 'required',
+            
+        ],[
+            'kelas.required'=>':Attribute harus diisi',
+        ]);
+        $data = new Kelas;
+        $data->kelas = $request->kelas;
+        $data->save();
+        return response()->json(['success'=>true]);
     }
 
     /**
@@ -55,9 +79,10 @@ class KelasController extends Controller
      * @param  \App\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kelas $kelas)
+    public function edit($id)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+        return $kelas;
     }
 
     /**
@@ -67,9 +92,27 @@ class KelasController extends Controller
      * @param  \App\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kelas $kelas)
+    public function update(Request $request,$id)
     {
-        //
+        $this->validate($request, [
+            'kelas' => 'required',
+            
+        ],[
+            'kelas.required'=>':Attribute harus diisi',
+        ]);
+        $data = Kelas::findOrFail($id);
+        $data->kelas = $request->kelas;
+        $data->save();
+        return response()->json(['success'=>true]);
+    }
+
+    public function removedata(Request $request)
+    {
+        $kelas = Kelas::find($request->input('id'));
+        if($kelas->delete())
+        {
+            echo 'Data Deleted';
+        }
     }
 
     /**

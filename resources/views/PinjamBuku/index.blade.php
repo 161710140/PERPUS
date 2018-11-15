@@ -28,13 +28,15 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="tab_siswa" class="table table-bordered" style="width:100%">
+              <table id="tab_pinjam" class="table table-bordered" style="width:100%">
                   <thead>
                      <tr>
-                        <th>Nomer Absen</th>
-                        <th>Nomer Induk</th>
+                        <th>Nomer Peminjaman</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
+                        <th>Buku</th>
+                        <th>Tanggal Pinjam</th>
+                        <th>Tanggal Harus Kembali Buku</th>
                         <th>Action</th>
                      </tr>
                   </thead>
@@ -48,19 +50,21 @@
 @endsection
 @push('scripts')
 
-@include('Siswa.modal')
+@include('PinjamBuku.modal')
       <script type="text/javascript">
          $(document).ready(function() {
 
-          $('#tab_siswa').DataTable({
+          $('#tab_pinjam').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '/jsonSiswa',
+            ajax: '/jsonpinjam',
             columns:[
-                  { data: 'no_absen', name: 'no_absen' },
-                  { data: 'no_induk', name: 'no_induk' },
-                  { data: 'nama', name: 'nama' },
+                  { data: 'nomer_peminjaman', name: 'nomer_peminjaman' },
+                  { data: 'siswa'},
                   { data: 'kelas'},
+                  { data: 'buku'},
+                  { data: 'tanggal_pinjam', name: 'tanggal_pinjam' },
+                  { data: 'tanggal_harus_kembali', name: 'tanggal_harus_kembali' },
                   { data: 'action', orderable: false, searchable: false }
               ],
             });
@@ -110,7 +114,7 @@
                       timer:'2000'
                     });
                   $('#Modal').modal('hide');
-                  $('#tab_siswa').DataTable().ajax.reload();
+                  $('#tab_pinjam').DataTable().ajax.reload();
                 },
 
                 //menampilkan validasi error
@@ -155,7 +159,7 @@
                     type: 'success',
                     timer: '3500'
                   })
-                  $('#tab_siswa').DataTable().ajax.reload();
+                  $('#tab_pinjam').DataTable().ajax.reload();
                 },
                 error: function (data){
                     swal({
@@ -209,7 +213,7 @@
           });
 
           $(document).on('hide.bs.modal','#Modal', function() {
-            $('#tab_siswa').DataTable().ajax.reload();
+            $('#tab_pinjam').DataTable().ajax.reload();
           });
 
           //proses delete data
@@ -228,7 +232,7 @@
                       type:'success',
                       timer:'1500'
                     });
-                    $('#tab_siswa').DataTable().ajax.reload();
+                    $('#tab_pinjam').DataTable().ajax.reload();
                   }
                 })
               }

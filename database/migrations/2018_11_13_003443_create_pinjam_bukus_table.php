@@ -15,14 +15,14 @@ class CreatePinjamBukusTable extends Migration
     {
         Schema::create('pinjam_bukus', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nomer_peminjaman');
+            $table->integer('nomer_peminjaman')->unsigned();
             $table->string('id_siswa');
             $table->string('id_buku');
             $table->string('id_kelas');
             $table->date('tanggal_pinjam');
-            $table->date('tanggal_kembali');
+            $table->date('tanggal_kembali')->nullable();
             $table->date('tanggal_harus_kembali');
-            $table->string('hukuman');
+            $table->string('hukuman')->nullable();
             $table->timestamps();
         });
     }

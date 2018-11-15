@@ -23,18 +23,19 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h1 class="card-title">Table Jenis Buku</h1>
+              <h1 class="card-title">Nama Kelas</h1>
               <button type="button" name="add" id="Tambah" class="btn btn-primary pull-right" style="margin-left: 960px; margin-top: 10px; margin-bottom: 10px">Add Data</button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="tab_siswa" class="table table-bordered" style="width:100%">
+              <table id="tab_buku" class="table table-bordered" style="width:100%">
                   <thead>
                      <tr>
-                        <th>Nomer Absen</th>
-                        <th>Nomer Induk</th>
-                        <th>Nama Siswa</th>
-                        <th>Kelas</th>
+                        <th>Judul</th>
+                        <th>Pengarang</th>
+                        <th>Tahun Terbit</th>
+                        <th>Penerbit</th>
+                        <th>Tersedia</th>
                         <th>Action</th>
                      </tr>
                   </thead>
@@ -48,19 +49,20 @@
 @endsection
 @push('scripts')
 
-@include('Siswa.modal')
+@include('Buku.modal')
       <script type="text/javascript">
          $(document).ready(function() {
 
-          $('#tab_siswa').DataTable({
+          $('#tab_buku').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '/jsonSiswa',
+            ajax: '/jsonbuku',
             columns:[
-                  { data: 'no_absen', name: 'no_absen' },
-                  { data: 'no_induk', name: 'no_induk' },
-                  { data: 'nama', name: 'nama' },
-                  { data: 'kelas'},
+                  { data: 'judul', name: 'judul' },
+                  { data: 'pengarang', name: 'pengarang' },
+                  { data: 'tahun_terbit', name: 'tahun_terbit' },
+                  { data: 'penerbit', name: 'penerbit' },
+                  { data: 'tersedia', name: 'tersedia' },
                   { data: 'action', orderable: false, searchable: false }
               ],
             });
@@ -94,7 +96,7 @@
 
               $.ajax({
                 type: "POST",
-                url: "{{url ('/storesiswa')}}",
+                url: "{{url ('/storebuku')}}",
                 data: new FormData(this),
                // data: $('#student_form').serialize(),
                 contentType: false,
@@ -110,7 +112,7 @@
                       timer:'2000'
                     });
                   $('#Modal').modal('hide');
-                  $('#tab_siswa').DataTable().ajax.reload();
+                  $('#tab_buku').DataTable().ajax.reload();
                 },
 
                 //menampilkan validasi error
@@ -140,7 +142,7 @@
                //mengupdate data yang telah diedit
               $.ajax({
                 type: "POST",
-                url: "{{url ('siswa/edit')}}"+ '/' + $('#id').val(),
+                url: "{{url ('buku/edit')}}"+ '/' + $('#id').val(),
                 // data: $('#student_form').serialize(),
                 data: new FormData(this),
                 contentType: false,
@@ -155,7 +157,7 @@
                     type: 'success',
                     timer: '3500'
                   })
-                  $('#tab_siswa').DataTable().ajax.reload();
+                  $('#tab_buku').DataTable().ajax.reload();
                 },
                 error: function (data){
                     swal({
@@ -188,7 +190,7 @@
             var bebas = $(this).data('id');
             $('#form_tampil').html('');
             $.ajax({
-              url:"{{url('siswa/getedit')}}" + '/' + bebas,
+              url:"{{url('buku/getedit')}}" + '/' + bebas,
               method:'get',
               data:{id:bebas},
               dataType:'json',
@@ -197,10 +199,11 @@
                 state = "update";
 
                 $('#id').val(data.id);
-                $('#no_absen').val(data.no_absen);
-                $('#nama').val(data.nama);
-                $('#no_induk').val(data.no_induk);
-                $('#id_kelas').val(data.id_kelas);
+                $('#judul').val(data.judul);
+                $('#pengarang').val(data.pengarang);
+                $('#tahun_terbit').val(data.tahun_terbit);
+                $('#penerbit').val(data.penerbit);
+                $('#tersedia').val(data.tersedia);
                 $('#Modal').modal('show');
                 $('#aksi').val('Simpan');
                 $('.modal-title').text('Edit Data');
@@ -209,7 +212,7 @@
           });
 
           $(document).on('hide.bs.modal','#Modal', function() {
-            $('#tab_siswa').DataTable().ajax.reload();
+            $('#tab_buku').DataTable().ajax.reload();
           });
 
           //proses delete data
@@ -228,7 +231,7 @@
                       type:'success',
                       timer:'1500'
                     });
-                    $('#tab_siswa').DataTable().ajax.reload();
+                    $('#tab_buku').DataTable().ajax.reload();
                   }
                 })
               }

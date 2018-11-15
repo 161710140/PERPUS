@@ -38,36 +38,19 @@
                       placeholder="Masukan Nama Siswa">
                      <span class="help-block has-error nama_error"></span>
                   </div>
-                  <div class="form-group">
-                     <label>Kelas</label>
-                     <select class="form-control select-dua" name="kelas" id="kelas" style="width: 468px">
-                        <option disabled selected>Nama Kelas</option>
-                        <option value="Kelas I Fatimah">Kelas I Fatimah</option>
-                        <option value="Kelas I Sarah">Kelas I Sarah</option>
-                        <option value="Kelas I Hajar">Kelas I Hajar</option>
-                        <option value="Kelas I Zaenab">Kelas I Zaenab</option>
-                        <option value="Kelas II Shofiyah">Kelas II Shofiyah</option>
-                        <option value="Kelas II Hafsah">Kelas II Hafsah</option>
-                        <option value="Kelas II Aisyah">Kelas II Aisyah</option>
-                        <option value="Kelas III Hamzah">Kelas III Hamzah</option>
-                        <option value="Kelas III Mushab">Kelas III Mushab</option>
-                        <option value="Kelas III Kholid">Kelas III Kholid</option>
-                        <option value="Kelas III Salman">Kelas III Salman</option>
-                        <option value="Kelas IV Zaid">Kelas IV Zaid</option>
-                        <option value="Kelas IV Saad">Kelas IV Saad</option>
-                        <option value="Kelas IV Usamah">Kelas IV Usamah</option>
-                        <option value="Kelas IV Bilal">Kelas IV Bilal</option>
-                        <option value="Kelas V Umar">Kelas V Umar</option>
-                        <option value="Kelas V Zubair">Kelas V Zubair</option>
-                        <option value="Kelas V Anas">Kelas V Anas</option>
-                        <option value="Kelas V Muadz">Kelas V Muadz</option>
-                        <option value="Kelas VI Ali">Kelas VI Ali</option>
-                        <option value="Kelas VI Abu Bakar">Kelas VI Abu Bakar</option>
-                        <option value="Kelas VI Utsman">Kelas VI Utsman</option>
-                        <option value="Kelas VI Muadz">Kelas VI Muadz</option>
-                        </select>
-                        </option>
-                     <span class="help-block has-error kelas_error"></span>
+                  <div class="form-group {{ $errors->has('id_kelas') ? 'has-error' : '' }}">
+                     <label>Nama Kelas</label>
+                     <select class="form-control select-dua" name="id_kelas" id="id_kelas" style="width: 468px">
+                        <option disabled selected>Pilih Kelas</option>
+                        @foreach($kelas as $data)
+                        <option value="{{$data->id}}">{{$data->kelas}}</option>
+                        @endforeach
+                     </select>
+                     @if ($errors->has('suplier_id'))
+                     <span class="help-block has-error id_kelas_error">
+                        <strong>{{$errors->first('id_kelas')}}</strong>
+                     </span>
+                     @endif
                   </div>
 				<div class="modal-footer">
 					<input type="submit" name="submit" id="aksi" value="Tambah" class="btn btn-info" />
