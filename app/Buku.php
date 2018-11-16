@@ -11,6 +11,6 @@ class Buku extends Model
 
     public function Pinjambuku()
     {
-        return $this->hasOne('App\PinjamBuku','id_buku');
+        return $this->hasMany('App\PinjamBuku','id_buku');
     }
 }

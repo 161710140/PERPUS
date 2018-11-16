@@ -15,7 +15,6 @@ class CreatePinjamBukusTable extends Migration
     {
         Schema::create('pinjam_bukus', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('nomer_peminjaman')->unsigned();
             $table->string('id_siswa');
             $table->string('id_buku');
             $table->string('id_kelas');

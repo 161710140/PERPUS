@@ -20,12 +20,6 @@
                   {{csrf_field()}} {{ method_field('POST') }}
                   <span id="form_tampil"></span>
                   <input type="hidden" name="id" id="id">
-                  <div class="form-group">
-                     <label>Nomor Peminjaman Buku</label>
-                     <input type="text" name="nomer_peminjaman" id="nomer_peminjaman" class="form-control" 
-                     placeholder="Masukan Nomor Absen Siswa">
-                     <span class="help-block has-error no_absen_error"></span>
-                  </div>
                   <div class="form-group {{ $errors->has('id_kelas') ? 'has-error' : '' }}">
                      <label>Nama Kelas</label>
                      <select class="form-control select-dua" name="id_kelas" id="id_kelas" style="width: 468px">
@@ -55,9 +49,9 @@
                      @endif
                   </div>
                   <div class="form-group {{ $errors->has('id_buku') ? 'has-error' : '' }}">
-                     <label>Nama Kelas</label>
+                     <label>Buku</label>
                      <select class="form-control select-dua" name="id_buku" id="id_buku" style="width: 468px">
-                        <option disabled selected>Pilih Kelas</option>
+                        <option disabled selected>Pilih Buku Yang Ingin Di Pinjam</option>
                         @foreach($buku as $data)
                         <option value="{{$data->id}}">{{$data->judul}}</option>
                         @endforeach
@@ -76,8 +70,8 @@
                   </div>
                   <div class="form-group">
                      <label>Tanggal Harus Kembali Buku</label>
-                     <input type="date" name="tanggal_harus_kembali" id="tanggal_harus_kembali" 
-                     class="form-control" value="<?php echo Carbon\Carbon::now()->addDays(3)->format('Y-m-d') ?>" readonly>
+                     <input type="date" name="tanggal_harus_kembali" id="tanggal_harus_kembali" class="form-control"
+                     value="<?php echo Carbon\Carbon::now()->addDays(3)->format('Y-m-d') ?>" readonly>
                      <span class="help-block has-error kota_error"></span>
                   </div>
 				<div class="modal-footer">

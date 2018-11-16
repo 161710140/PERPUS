@@ -38,16 +38,16 @@ Route::get('ajaxdata/removedatabuku', 'BukuController@removedata')->name('ajaxda
 Route::post('buku/edit/{id}','BukuController@update');
 Route::get('buku/getedit/{id}','BukuController@edit');
 
-//Buku
+//Pinjam
 Route::get('/jsonpinjam','PinjamBukuController@jsonpinjam');
 Route::resource('/pinjam','PinjamBukuController');
 Route::post('storepinjam','PinjamBukuController@store')->name('tambah');
 Route::post('pinjam/edit/{id}','PinjamBukuController@update');
 Route::get('pinjam/getedit/{id}','PinjamBukuController@edit');
 
-//Buku
+//Pengembalian
 Route::get('/jsonpengembalian','PinjamBukuController@jsonpengembalian');
-Route::resource('/buku','PinjamBukuController');
-Route::post('storebuku','PinjamBukuController@store')->name('tambah');
-Route::get('ajaxdata/removedatabuku', 'PinjamBukuController@removedata')->name('ajaxdata');
+Route::get('/pengembalian','PinjamBukuController@index2');
+Route::post('storepengembalian','PinjamBukuController@store2')->name('tambah');
+Route::get('ajaxdata/removedatapengembalian', 'PinjamBukuController@removedata')->name('ajaxdata');
 

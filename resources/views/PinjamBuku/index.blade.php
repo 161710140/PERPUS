@@ -31,7 +31,6 @@
               <table id="tab_pinjam" class="table table-bordered" style="width:100%">
                   <thead>
                      <tr>
-                        <th>Nomer Peminjaman</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
                         <th>Buku</th>
@@ -59,7 +58,6 @@
             serverSide: true,
             ajax: '/jsonpinjam',
             columns:[
-                  { data: 'nomer_peminjaman', name: 'nomer_peminjaman' },
                   { data: 'siswa'},
                   { data: 'kelas'},
                   { data: 'buku'},
@@ -98,7 +96,7 @@
 
               $.ajax({
                 type: "POST",
-                url: "{{url ('/storesiswa')}}",
+                url: "{{url ('/storepinjam')}}",
                 data: new FormData(this),
                // data: $('#student_form').serialize(),
                 contentType: false,
@@ -144,7 +142,7 @@
                //mengupdate data yang telah diedit
               $.ajax({
                 type: "POST",
-                url: "{{url ('siswa/edit')}}"+ '/' + $('#id').val(),
+                url: "{{url ('pinjam/edit')}}"+ '/' + $('#id').val(),
                 // data: $('#student_form').serialize(),
                 data: new FormData(this),
                 contentType: false,
@@ -192,7 +190,7 @@
             var bebas = $(this).data('id');
             $('#form_tampil').html('');
             $.ajax({
-              url:"{{url('siswa/getedit')}}" + '/' + bebas,
+              url:"{{url('pinjam/getedit')}}" + '/' + bebas,
               method:'get',
               data:{id:bebas},
               dataType:'json',
@@ -205,6 +203,8 @@
                 $('#nama').val(data.nama);
                 $('#no_induk').val(data.no_induk);
                 $('#id_kelas').val(data.id_kelas);
+                $('#id_buku').val(data.id_buku);
+                $('#id_siswa').val(data.id_siswa);
                 $('#Modal').modal('show');
                 $('#aksi').val('Simpan');
                 $('.modal-title').text('Edit Data');
